@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 html,body,#web{ overflow:hidden; }
 html,body{ width:100%; height:100%; overscroll-behavior:none; }
 body{ position:relative; height:100dvh; color:#000; }
@@ -13,10 +15,9 @@ button,input[type="button"],input[type="submit"],input[type="reset"]{ cursor: po
 textarea{ resize:none; }
 /*____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
 
-@charset "UTF-8";
+
 @font-face{ font-family: 'poketitle'; src: url('./fonts/poketitle.ttf'); font-display: swap; }
 @font-face{ font-family: 'poketext'; src: url('./fonts/poketext.ttf'); font-display: swap; }
-
 :root
 {
 	--c-01: rgb(0,0,0);
