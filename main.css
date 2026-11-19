@@ -14,8 +14,8 @@ textarea{ resize:none; }
 /*____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
 
 @charset "UTF-8";
-@font-face{ font-family: 'poketitle'; src: url('./poketitle.ttf'); font-display: swap; }
-@font-face{ font-family: 'poketext'; src: url('./poketext.ttf'); font-display: swap; }
+@font-face{ font-family: 'poketitle'; src: url('./fonts/poketitle.ttf'); font-display: swap; }
+@font-face{ font-family: 'poketext'; src: url('./fonts/poketext.ttf'); font-display: swap; }
 
 :root
 {
@@ -349,14 +349,23 @@ textarea{ resize:none; }
 /* ADDED: .scene_stage LAYOUT, HUD BAR & RESPONSIVE CARD BOARD                  */
 /* Padding keeps cards clear of #frame borders, logo at top, and #score bottom  */
 /* ============================================================================ */
+
+@property --scene-stage
+{
+	syntax: '<angle>';
+	initial-value: 30deg;
+	inherits: false;
+}
 .scene_stage
 {
-   background: repeating-conic-gradient(var(--c-2) 5deg 20deg, #143fb0 20deg 35deg);
+   background: repeating-conic-gradient(var(--c-04) 5deg 20deg, var(--c-03) 20deg var(--scene-stage));
    display: flex;
    flex-direction: column;
    padding: 96px 46px 68px 46px;
    gap: 10px;
+   animation: scene_stage 9s ease-in-out infinite alternate;
 }
+@keyframes scene_stage{ 0%{ --scene-stage: 30deg; } 100%{ --scene-stage: 40deg; } }
 
 /* ADDED: Top bar inside .scene_stage for Trainer name, live timer, and buttons */
 #stage_hud
@@ -460,12 +469,75 @@ textarea{ resize:none; }
 }
 
 /* ADDED: Back face using your exact local path ./art/card_back.png + 3px Z offset */
+/*
 .card_back
 {
    background-color: var(--c-2);
    background-image: url('./art/card_back.png');
    transform: rotateY(0deg) translateZ(3px);
-       background-size: 266% 161% !important;
+   background-size: 266% 161% !important;
+}
+*/
+.card_back
+{
+	container-type: size;
+	background-color: #030a24;
+	border: 4px solid var(--c-1);
+	transform: rotateY(0deg) translateZ(3px);
+	overflow: hidden;
+	box-shadow:
+		inset 0 0 0 3px var(--c-01),
+		inset 0 0 0 8px var(--c-2),
+		inset 0 0 0 11px #030a24,
+		inset 0 0 0 14px var(--c-1),
+		inset 0 0 0 18px #030a24;
+}
+/* PURE-CSS VORTEX RINGS (dashed/double borders + solid shadow rings, no gradients) */
+.card_back::before
+{
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 120cqw;
+	height: 120cqw;
+	transform: translate(-50%, -50%) rotate(25deg);
+	border-radius: 44% 56% 46% 54% / 54% 44% 56% 46%;
+	border: 10cqw dashed var(--c-2);
+	outline: 6cqw double var(--c-1);
+	outline-offset: 4cqw;
+	box-shadow:
+		inset 0 0 0 6cqw #030a24,
+		inset 0 0 0 12cqw #38bdf8,
+		inset 0 0 0 17cqw #030a24,
+		inset 0 0 0 24cqw var(--c-2),
+		inset 0 0 0 28cqw #030a24;
+}
+
+/* PURE-CSS CENTER POKEBALL (solid inset box-shadows + center button, no gradients) */
+.card_back::after
+{
+	content: '●';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 36cqw;
+	height: 36cqw;
+	border-radius: 50%;
+	background-color: var(--c-04);
+	border: 2.5cqw solid var(--c-01);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--c-04);
+	font-size: 13cqw;
+	line-height: 1;
+	-webkit-text-stroke: 2.5cqw var(--c-01);
+	box-shadow:
+		inset 0 14cqw 0 0 var(--c-3),
+		inset 0 18cqw 0 0 var(--c-01),
+		0 0 12px 4px #38bdf8;
 }
 
 /* ADDED: Front face rotated 180deg on Y-axis; overrides * background-size so sprites keep ratio */
