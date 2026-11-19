@@ -302,3 +302,266 @@ textarea{ resize:none; }
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================================================ */
+/* ADDED: UTILITY TO HIDE .scene_room WHEN THE GAME STARTS                      */
+/* ============================================================================ */
+.scene_hidden
+{
+   display: none !important;
+}
+
+/* ============================================================================ */
+/* ADDED: .scene_stage LAYOUT, HUD BAR & RESPONSIVE CARD BOARD                  */
+/* Padding keeps cards clear of #frame borders, logo at top, and #score bottom  */
+/* ============================================================================ */
+.scene_stage
+{
+   background: repeating-conic-gradient(var(--c-2) 5deg 20deg, #143fb0 20deg 35deg);
+   display: flex;
+   flex-direction: column;
+   padding: 96px 46px 68px 46px;
+   gap: 10px;
+}
+
+/* ADDED: Top bar inside .scene_stage for Trainer name, live timer, and buttons */
+#stage_hud
+{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 8px;
+   background: var(--c-01);
+   border: 3px solid var(--c-1);
+   padding: 6px 12px;
+   color: var(--c-04);
+   font-family: 'poketext';
+   z-index: 2;
+}
+
+.hud_group
+{
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+#stage_timer
+{
+   color: var(--c-1);
+   font-family: 'poketext';
+   font-weight: bold;
+}
+
+/* ADDED: Visual indicator when timer freezes for 1.5s on a wrong pair */
+#stage_timer.timer_frozen
+{
+   color: var(--c-3);
+}
+
+.hud_btn
+{
+   background: var(--c-1);
+   color: var(--c-01);
+   font-family: 'poketext';
+   padding: 5px 10px;
+   border-radius: 6px;
+   font-size: 13px;
+   font-weight: bold;
+}
+
+.hud_btn:hover
+{
+   background: var(--c-04);
+}
+
+/* ADDED: Board container sized dynamically by JS to fit the monitor */
+#stage_board
+{
+   flex: 1;
+   width: 100%;
+   height: 100%;
+   display: grid;
+   place-content: center;
+   gap: 10px;
+   perspective: 1000px;
+   overflow: hidden;
+}
+
+/* ============================================================================ */
+/* ADDED: 3D POKEMON CARD (<div class="card_3d"> + TWO <span> FACES)            */
+/* ============================================================================ */
+.card_3d
+{
+   position: relative;
+   transform-style: preserve-3d;
+   transition: transform 0.35s ease-in-out;
+   cursor: pointer;
+   user-select: none;
+}
+
+.card_3d.card_flipped,
+.card_3d.card_matched
+{
+   transform: rotateY(180deg);
+}
+
+.card_3d.card_matched
+{
+   cursor: default;
+}
+
+.card_face
+{
+   position: absolute;
+   inset: 0;
+   display: block;
+   width: 100%;
+   height: 100%;
+   border-radius: 8px;
+   border: 3px solid var(--c-1);
+   backface-visibility: hidden;
+   -webkit-backface-visibility: hidden;
+}
+
+/* ADDED: Back face using your exact local path ./art/card_back.png + 3px Z offset */
+.card_back
+{
+   background-color: var(--c-2);
+   background-image: url('./art/card_back.png');
+   transform: rotateY(0deg) translateZ(3px);
+       background-size: 266% 161% !important;
+}
+
+/* ADDED: Front face rotated 180deg on Y-axis; overrides * background-size so sprites keep ratio */
+#web .card_front
+{
+   background-color: var(--c-04);
+   background-size: 85% auto !important;
+   transform: rotateY(180deg) translateZ(0px);
+}
+
+/* ADDED: Highlight matched cards in yellow */
+#web .card_3d.card_matched .card_front
+{
+   background-color: var(--c-1);
+   border-color: var(--c-01);
+}
+
+/* ============================================================================ */
+/* ADDED: FULL-SCREEN SCOREBOARD COMPONENT (CREATED BY JAVASCRIPT)              */
+/* ============================================================================ */
+#scoreboard_panel
+{
+   position: absolute;
+   inset: 0;
+   z-index: 5;
+   background: rgba(0, 0, 0, 0.92);
+   padding: 96px 46px 70px 46px;
+   display: none;
+   flex-direction: column;
+   gap: 12px;
+   color: var(--c-04);
+}
+
+#scoreboard_panel.score_open
+{
+   display: flex;
+}
+
+.score_header
+{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 10px;
+   background: var(--c-2);
+   border: 3px solid var(--c-1);
+   padding: 10px 16px;
+}
+
+.score_header h2
+{
+   font-family: 'poketitle';
+   color: var(--c-1);
+   font-size: 20px;
+   letter-spacing: 2px;
+}
+
+.score_table_wrap
+{
+   flex: 1;
+   overflow-y: auto;
+   border: 3px solid var(--c-1);
+   background: var(--c-01);
+}
+
+.score_table
+{
+   width: 100%;
+   text-align: left;
+   font-family: 'poketext';
+}
+
+/* ADDED: Restore native table layout overridden by your global display:block reset */
+#web .score_table{ display: table; }
+#web .score_table thead{ display: table-header-group; }
+#web .score_table tbody{ display: table-row-group; }
+#web .score_table tr{ display: table-row; }
+#web .score_table th,
+#web .score_table td
+{
+   display: table-cell;
+   padding: 10px 12px;
+   border-bottom: 1px solid var(--c-02);
+}
+
+#web .score_table th
+{
+   background: var(--c-1);
+   color: var(--c-01);
+   font-weight: bold;
+}
+
+#web .score_table tr.score_me td
+{
+   background: var(--c-2);
+   color: var(--c-1);
+   font-weight: bold;
+}
